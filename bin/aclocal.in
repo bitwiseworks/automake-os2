@@ -43,6 +43,7 @@ use Automake::XFile;
 use Automake::FileUtils;
 use File::Basename;
 use File::Path ();
+use File::Temp;
 
 # Some globals.
 
@@ -768,29 +769,71 @@ sub trace_used_macros ()
   #        2.70 or later.
   $traces .= "$automake_includes[0]/internal/ac-config-macro-dirs.m4 ";
 
-  # All candidate files.
-  $traces .= join (' ',
-		   (map { "'$_'" }
-		    (grep { exists $files{$_} } @file_order))) . " ";
+  my $response_fh;
 
-  # All candidate macros.
-  $traces .= join (' ',
-		   (map { "--trace='$_:\$f::\$n::\${::}%'" }
-		    ('AC_DEFUN',
-		     'AC_DEFUN_ONCE',
-		     'AU_DEFUN',
-		     '_AM_AUTOCONF_VERSION',
-		     'AC_CONFIG_MACRO_DIR_TRACE',
-                     # FIXME: Tracing the next two macros is a hack for
-                     # compatibility with older autoconf.  Remove this in
-                     # Automake 2.0, when we can assume Autoconf 2.70 or
-                     # later.
-		     'AC_CONFIG_MACRO_DIR',
-		     '_AM_CONFIG_MACRO_DIRS')),
-		   # Do not trace $1 for all other macros as we do
-		   # not need it and it might contains harmful
-		   # characters (like newlines).
-		   (map { "--trace='$_:\$f::\$n'" } (keys %macro_seen)));
+  if ($^O eq 'os2')
+    {
+      # On OS/2, there is a 32K limit on the program arguments size but
+      # the traces command may grow more. Use a response file.
+
+      $response_fh = new File::Temp(UNLINK => 1);
+
+      # All candidate files.
+      print $response_fh
+            join ("\n",
+                  (map { "$_" }
+                  (grep { exists $files{$_} } @file_order))) . "\n";
+
+      # All candidate macros.
+      print $response_fh
+            join ("\n",
+                 (map { "--trace=$_:\$f::\$n::\${::}%" }
+                  ('AC_DEFUN',
+                   'AC_DEFUN_ONCE',
+                   'AU_DEFUN',
+                   '_AM_AUTOCONF_VERSION',
+                   'AC_CONFIG_MACRO_DIR_TRACE',
+                   # FIXME: Tracing the next two macros is a hack for
+                   # compatibility with older autoconf.  Remove this in
+                   # Automake 2.0, when we can assume Autoconf 2.70 or
+                   # later.
+                   'AC_CONFIG_MACRO_DIR',
+                   '_AM_CONFIG_MACRO_DIRS')),
+                 # Do not trace $1 for all other macros as we do
+                 # not need it and it might contains harmful
+                 # characters (like newlines).
+                 (map { "--trace=$_:\$f::\$n" } (keys %macro_seen)));
+
+      $response_fh->flush;
+
+      $traces .= "\@$response_fh";
+    }
+  else
+    {
+      # All candidate files.
+      $traces .= join (' ',
+                       (map { "'$_'" }
+                        (grep { exists $files{$_} } @file_order))) . " ";
+
+      # All candidate macros.
+      $traces .= join (' ',
+                       (map { "--trace='$_:\$f::\$n::\${::}%'" }
+                        ('AC_DEFUN',
+                         'AC_DEFUN_ONCE',
+                         'AU_DEFUN',
+                         '_AM_AUTOCONF_VERSION',
+                         'AC_CONFIG_MACRO_DIR_TRACE',
+                         # FIXME: Tracing the next two macros is a hack for
+                         # compatibility with older autoconf.  Remove this in
+                         # Automake 2.0, when we can assume Autoconf 2.70 or
+                         # later.
+                         'AC_CONFIG_MACRO_DIR',
+                         '_AM_CONFIG_MACRO_DIRS')),
+                       # Do not trace $1 for all other macros as we do
+                       # not need it and it might contains harmful
+                       # characters (like newlines).
+                       (map { "--trace='$_:\$f::\$n'" } (keys %macro_seen)));
+    }
 
   verb "running $traces $configure_ac";
 
