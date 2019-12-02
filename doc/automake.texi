@@ -2,6 +2,8 @@
 @c %**start of header
 @setfilename automake.info
 @settitle automake
+@documentencoding UTF-8
+@documentlanguage en
 @setchapternewpage off
 @c %**end of header
 
@@ -23,7 +25,7 @@ This manual is for GNU Automake (version @value{VERSION},
 @value{UPDATED}), a program that creates GNU standards-compliant
 Makefiles from template files.
 
-Copyright @copyright{} 1995-2013 Free Software Foundation, Inc.
+Copyright @copyright{} 1995-2018 Free Software Foundation, Inc.
 
 @quotation
 Permission is granted to copy, distribute and/or modify this document
@@ -1240,8 +1242,12 @@ uninstall} do not omit any file (@pxref{Standard Targets}),
 and it checks that @code{DESTDIR} installations work (@pxref{DESTDIR}).
 @end itemize
 
-All of these actions are performed in a temporary subdirectory, so
-that no root privileges are required.
+All of these actions are performed in a temporary directory, so that no
+root privileges are required.  Please note that the exact location and the
+exact structure of such a subdirectory (where the extracted sources are
+placed, how the temporary build and install directories are named and how
+deeply they are nested, etc.) is to be considered an implementation detail,
+which can change at any time; so do not rely on it.
 
 Releasing a package that fails @code{make distcheck} means that one of
 the scenarios we presented will not work and some users will be
@@ -1828,7 +1834,7 @@ variable definitions.
 @cindex indentation in Makefile.am
 Generally, Automake is not particularly smart in the parsing of unusual
 Makefile constructs, so you're advised to avoid fancy constructs or
-``creative'' use of whitespaces.
+``creative'' use of whitespace.
 @c Keep this in sync with doc-parsing-buglets-tabs.sh
 For example, @key{TAB} characters cannot be used between a target name
 and the following ``@code{:}'' character, and variable assignments
@@ -1899,9 +1905,6 @@ It is customary to make the first line of @file{Makefile.am} read:
 @example
 ## Process this file with automake to produce Makefile.in
 @end example
-
-@c FIXME discuss putting a copyright into Makefile.am here?  I would but
-@c I don't know quite what to say.
 
 @c FIXME document customary ordering of Makefile.am here!
 
@@ -2274,7 +2277,7 @@ support new architectures and fix probes broken by changes in new
 kernel versions.  Each new release of Automake comes with up-to-date
 copies of these programs.  If your copy of Automake is getting old,
 you are encouraged to fetch the latest versions of these files from
-@url{http://savannah.gnu.org/git/?group=config} before making a
+@url{https://savannah.gnu.org/git/?group=config} before making a
 release.
 
 @item depcomp
@@ -2318,7 +2321,7 @@ testsuite harness.
 Not a program, this file is required for @samp{make dvi}, @samp{make
 ps} and @samp{make pdf} to work when Texinfo sources are in the
 package.  The latest version can be downloaded from
-@url{http://www.gnu.org/software/texinfo/}.
+@url{https://www.gnu.org/software/texinfo/}.
 
 @item ylwrap
 This program wraps @command{lex} and @command{yacc} to rename their
@@ -2575,6 +2578,11 @@ for more information.
 @opindex --libdir
 Look for Automake data files in directory @var{dir} instead of in the
 installation directory.  This is typically used for debugging.
+
+@vindex AUTOMAKE_LIBDIR
+The environment variable @env{AUTOMAKE_LIBDIR} provides another way to
+set the directory containing Automake data files.  However
+@option{--libdir} takes precedence over it.
 
 @item --print-libdir
 @opindex --print-libdir
@@ -3213,6 +3221,11 @@ overridden using the @env{AUTOM4TE} environment variable.
 Look for the automake-provided macro files in @var{dir} instead of
 in the installation directory.  This is typically used for debugging.
 
+@vindex ACLOCAL_AUTOMAKE_DIR
+The environment variable @env{ACLOCAL_AUTOMAKE_DIR} provides another
+way to set the directory containing automake-provided macro files.
+However @option{--automake-acdir} takes precedence over it.
+
 @item --system-acdir=@var{dir}
 @opindex --system-acdir
 Look for the system-wide third-party macro files (and the special
@@ -3276,7 +3289,7 @@ find third-party @file{.m4} files.  When this option is given, normal
 processing is suppressed.  This option was used @emph{in the past} by
 third-party packages to determine where to install @file{.m4} macro
 files, but @emph{this usage is today discouraged}, since it causes
-@samp{$(prefix)} not to be thoroughly honoured (which violates the
+@samp{$(prefix)} not to be thoroughly honored (which violates the
 GNU Coding Standards), and a similar semantics can be better obtained
 with the @env{ACLOCAL_PATH} environment variable; @pxref{Extending aclocal}.
 
@@ -3472,7 +3485,7 @@ Also note that, if the @option{--install} option is used, any @file{.m4}
 file containing a required macro that is found in a directory listed in
 @env{ACLOCAL_PATH} will be installed locally.
 @c Keep in sync with aclocal-path-installed-serial.sh
-In this case, serial numbers in @file{.m4} are honoured too,
+In this case, serial numbers in @file{.m4} are honored too,
 @pxref{Serials}.
 
 Conversely to @file{dirlist}, @env{ACLOCAL_PATH} is useful if you are
@@ -3854,12 +3867,12 @@ will have been taken care of.  If otherwise you used to call
 @command{aclocal} directly yourself or from some script, you will
 quickly notice the change.
 
-Many packages come with a script called @file{bootstrap.sh} or
+Many packages come with a script called @file{bootstrap} or
 @file{autogen.sh}, that will just call @command{aclocal},
 @command{libtoolize}, @command{gettextize} or @command{autopoint},
 @command{autoconf}, @command{autoheader}, and @command{automake} in
 the right order.  Actually this is precisely what @command{autoreconf}
-can do for you.  If your package has such a @file{bootstrap.sh} or
+can do for you.  If your package has such a @file{bootstrap} or
 @file{autogen.sh} script, consider using @command{autoreconf}.  That
 should simplify its logic a lot (less things to maintain, yum!), it's
 even likely you will not need the script anymore, and more to the point
@@ -3912,12 +3925,15 @@ This usage is mostly obsolete because the @var{package} and @var{version}
 can be obtained from Autoconf's @code{AC_INIT} macro.  However,
 differently from what happens for @code{AC_INIT} invocations, this
 @code{AM_INIT_AUTOMAKE} invocation supports shell variables' expansions
-in the @code{PACKAGE} and @code{VERSION} arguments, and this can be
-still be useful in some selected situations.  Our hope is that future
-Autoconf versions will improve their support for package versions
-defined dynamically at configure runtime; when (and if) this happens,
-support for the two-args @code{AM_INIT_AUTOMAKE} invocation will likely
-be removed from Automake.
+in the @code{PACKAGE} and @code{VERSION} arguments (which otherwise
+defaults, respectively, to the @code{PACKAGE_TARNAME} and
+@code{PACKAGE_VERSION} defined via the @code{AC_INIT} invocation;
+@pxref{AC_INIT, , The @code{AC_INIT} macro, autoconf, The Autoconf Manual});
+and this can be still be useful in some selected situations.
+Our hope is that future Autoconf versions will improve their support
+for package versions defined dynamically at configure runtime; when
+(and if) this happens, support for the two-args @code{AM_INIT_AUTOMAKE}
+invocation will likely be removed from Automake.
 
 @anchor{Modernize AM_INIT_AUTOMAKE invocation}
 If your @file{configure.ac} has:
@@ -5518,7 +5534,7 @@ performed automatically by Autoconf (@pxref{AC_LIBOBJ vs LIBOBJS, ,
 @cindex @command{libtoolize}, no longer run by @command{automake}
 @cindex @command{libtoolize} and @command{autoreconf}
 @cindex @command{autoreconf} and @command{libtoolize}
-@cindex @file{bootstrap.sh} and @command{autoreconf}
+@cindex @file{bootstrap} and @command{autoreconf}
 @cindex @file{autogen.sh} and @command{autoreconf}
 
 Libtool comes with a tool called @command{libtoolize} that will
@@ -5537,7 +5553,7 @@ functionality has been moved into the @command{autoreconf} command
 (@pxref{autoreconf Invocation, , Using @command{autoreconf}, autoconf,
 The Autoconf Manual}).  If you do not want to remember what to run and
 when, just learn the @command{autoreconf} command.  Hopefully,
-replacing existing @file{bootstrap.sh} or @file{autogen.sh} scripts by
+replacing existing @file{bootstrap} or @file{autogen.sh} scripts by
 a call to @command{autoreconf} should also free you from any similar
 incompatible change in the future.
 
@@ -7601,7 +7617,9 @@ native machine code; @pxref{Java Support with gcj}).  Note however that
 Future Automake releases will strive to provide a better and cleaner
 interface, which however @emph{won't be backward-compatible}; the present
 interface will probably be removed altogether some time after the
-introduction of the new interface (if that ever materializes).
+introduction of the new interface (if that ever materializes).  In any
+case, the current @code{JAVA} primary features are frozen and will no
+longer be developed, not even to take bug fixes.
 
 Any @file{.java} files listed in a @code{_JAVA} variable will be
 compiled with @code{JAVAC} at build time.  By default, @file{.java}
@@ -7874,7 +7892,7 @@ All of these targets can be extended using @samp{-local} rules
 
 If the @file{.texi} file @code{@@include}s @file{version.texi}, then
 that file will be automatically generated.  The file @file{version.texi}
-defines four Texinfo flag you can reference using
+defines four Texinfo flags you can reference using
 @code{@@value@{EDITION@}}, @code{@@value@{VERSION@}},
 @code{@@value@{UPDATED@}}, and @code{@@value@{UPDATED-MONTH@}}.
 
@@ -8379,9 +8397,13 @@ We recommend that you follow this same set of heuristics in your
 The @code{dist} rule in the generated @file{Makefile.in} can be used
 to generate a gzipped @code{tar} file and other flavors of archive for
 distribution.  The file is named based on the @code{PACKAGE} and
-@code{VERSION} variables defined by @code{AM_INIT_AUTOMAKE}
-(@pxref{Macros}); more precisely the gzipped @code{tar} file is named
-@samp{@var{package}-@var{version}.tar.gz}.
+@code{VERSION} variables automatically defined by either the
+@code{AC_INIT} invocation or by a @emph{deprecated} two-arguments
+invocation of the @code{AM_INIT_AUTOMAKE} macro (see @ref{Public Macros}
+for how these variables get their values, from either defaults or explicit
+values -- it's slightly trickier than one would expect).
+More precisely the gzipped @code{tar} file is named
+@samp{$@{PACKAGE@}-$@{VERSION@}.tar.gz}.
 @vindex GZIP_ENV
 You can use the @command{make} variable @code{GZIP_ENV} to control how gzip
 is run.  The default setting is @option{--best}.
@@ -8476,7 +8498,7 @@ dist-hook:
         rm -rf `find $(distdir)/doc -type d -name .svn`
 @end example
 
-@c The caveates described here should be documented in 'disthook.sh'.
+@c The caveats described here should be documented in 'disthook.sh'.
 @noindent
 Note that the @code{dist-hook} recipe shouldn't assume that the regular
 files in the distribution directory are writable; this might not be the
@@ -8547,6 +8569,13 @@ finally, makes another tarball to ensure the distribution is
 self-contained.
 @end itemize
 
+All of these actions are performed in a temporary directory.  Please
+note that the exact location and the exact structure of such a directory
+(where the read-only sources are placed, how the temporary build and
+install directories are named and how deeply they are nested, etc.) is
+to be considered an implementation detail, which can change at any time;
+so do not reply on it.
+
 @vindex AM_DISTCHECK_CONFIGURE_FLAGS
 @vindex DISTCHECK_CONFIGURE_FLAGS
 @subheading DISTCHECK_CONFIGURE_FLAGS
@@ -8557,7 +8586,7 @@ to supply additional flags to @command{configure}, define them in the
 provided there by defining the @code{DISTCHECK_CONFIGURE_FLAGS} variable,
 on the command line when invoking @command{make}.
 @c See automake bug#14991 for more details about how the following holds.
-It's worth nothing that @command{make distcheck} needs complete control
+It's worth noting that @command{make distcheck} needs complete control
 over the @command{configure} options @option{--srcdir} and
 @option{--prefix}, so those options cannot be overridden by
 @code{AM_DISTCHECK_CONFIGURE_FLAGS} nor by
@@ -8821,9 +8850,6 @@ error} happens when e.g., the set-up of a test case scenario fails, or when
 some other unexpected or highly undesirable condition is encountered (for
 example, the program under test experiences a segmentation fault).
 
-@emph{TODO}: Links to other test harnesses (esp. those sharing our
-terminology)?
-
 @node Simple Tests
 @section Simple Tests
 
@@ -8880,7 +8906,7 @@ Note however that, for tests based on more complex test protocols,
 the exact effects of @code{XFAIL_TESTS} and @code{DISABLE_HARD_ERRORS}
 might change, or they might even have no effect at all (for example,
 @c Keep this in sync with tap-no-disable-hard-errors.sh
-in tests using TAP, there is not way to disable hard errors, and the
+in tests using TAP, there is no way to disable hard errors, and the
 @code{DISABLE_HARD_ERRORS} variable has no effect on them).
 
 @anchor{Testsuite progress on console}
@@ -8956,8 +8982,6 @@ flag on file descriptors opened with the @command{exec} builtin, thus
 rendering an idiom like @code{AM_TESTS_ENVIRONMENT = exec 9>&2;}
 ineffectual.  This issue also affects some Bourne shells, such as the
 HP-UX's @command{/bin/sh},
-@c FIXME: should we offer a link to the relevant discussions on the
-@c bug-autoconf list?
 
 @c Keep in sync with tests-environment-backcompat.sh
 @example
@@ -9016,8 +9040,7 @@ suggest trying to give the parallel harness a shot though).
 The serial test harness is enabled by the Automake option
 @option{serial-tests}. It operates by simply running the tests serially,
 one at the time, without any I/O redirection.  It's up to the user to
-implement logging of tests' output, if that's requited or desired.
-@c TODO: give an example of how this can be done.
+implement logging of tests' output, if that's required or desired.
 
 For historical and implementation reasons, the @code{AM_TESTS_ENVIRONMENT}
 variable is @emph{not} supported by this harness (it will be silently
@@ -9086,8 +9109,6 @@ to a per-test log file, so that parallel execution does not produce
 intermingled output.  The output from failed tests is collected in the
 @file{test-suite.log} file.  If the variable @samp{VERBOSE} is set, this
 file is output after the summary.
-@c FIXME: we should be clearer about what we mean exactly here ...
-For best results, the tests should be verbose by default now.
 
 @vindex TEST_EXTENSIONS
 @vindex TEST_LOGS
@@ -9151,9 +9172,9 @@ and @samp{./wrapper-script -d baz} to produce @file{foo.log},
 as a side-effect.
 
 It's important to note that, differently from what we've seen for the
-serial test harness (@pxref{Parallel Test Harness}), the
+serial test harness (@pxref{Serial Test Harness}), the
 @code{AM_TESTS_ENVIRONMENT} and @code{TESTS_ENVIRONMENT} variables
-@emph{cannot} be use to define a custom test runner; the
+@emph{cannot} be used to define a custom test runner; the
 @code{LOG_COMPILER} and @code{LOG_FLAGS} (or their extension-specific
 counterparts) should be used instead:
 
@@ -9489,7 +9510,7 @@ The @file{.trs} file is used to register some metadata through the use
 of custom reStructuredText fields.  This metadata is expected to be
 employed in various ways by the parallel test harness; for example, to
 count the test results when printing the testsuite summary, or to decide
-which tests to re-run upon @command{make reheck}.  Unrecognized metadata
+which tests to re-run upon @command{make recheck}.  Unrecognized metadata
 in a @file{.trs} file is currently ignored by the harness, but this might
 change in the future. The list of currently recognized metadata follows.
 
@@ -9596,12 +9617,6 @@ other end, if you are using a known and widespread test protocol with
 well-established implementations, being consistent with those
 implementations' output might be a good idea too.
 
-@c TODO: Give an example, maybe inspired to py.test-style output.
-@c TODO: That is a good idea because it shows a test driver that allows
-@c TODO: for different levels of verbosity in the progress output (could
-@c TODO: be implemented either using a driver cmdline flag, or an
-@c TODO: environment variable, or both).
-
 @node Using the TAP test protocol
 @section Using the TAP test protocol
 
@@ -9650,10 +9665,9 @@ Currently, the TAP driver that comes with Automake requires some by-hand
 steps on the developer's part (this situation should hopefully be improved
 in future Automake versions).  You'll have to grab the @file{tap-driver.sh}
 script from the Automake distribution by hand, copy it in your source tree,
-add a call to @code{AC_PROG_AWK} in @file{configure.ac} to search for a
-proper awk program, and use the Automake support for third-party test
-drivers to instruct the harness to use the @file{tap-driver.sh} script
-and that awk program to run your TAP-producing tests.  See the example
+and use the Automake support for third-party test drivers to instruct the
+harness to use the @file{tap-driver.sh} script and the awk program found
+by @code{AM_INIT_AUTOMAKE} to run your TAP-producing tests.  See the example
 below for clarification.
 
 Apart from the options common to all the Automake test drivers
@@ -9709,7 +9723,6 @@ AC_CONFIG_AUX_DIR([build-aux])
 AM_INIT_AUTOMAKE([foreign -Wall -Werror])
 AC_CONFIG_FILES([Makefile])
 AC_REQUIRE_AUX_FILE([tap-driver.sh])
-AC_PROG_AWK
 AC_OUTPUT
 
 % @kbd{cat Makefile.am}
@@ -9742,7 +9755,7 @@ echo ok 1
 # Exit with error, even if all the tests have been successful.
 exit 7
 
-% @kbd{cp @var{PREFIX}/share/automake-@var{APIVERSION}/tap-driver.pl .}
+% @kbd{cp @var{PREFIX}/share/automake-@var{APIVERSION}/tap-driver.sh .}
 % @kbd{autoreconf -vi && ./configure && make check}
 ...
 PASS: foo.test 1 - Swallows fly
@@ -9844,7 +9857,7 @@ a Java-based project implementing both a TAP producer and a TAP consumer.
 @node DejaGnu Tests
 @section DejaGnu Tests
 
-If @uref{ftp://ftp.gnu.org/gnu/dejagnu/, @command{dejagnu}} appears in
+If @uref{https://ftp.gnu.org/gnu/dejagnu/, @command{dejagnu}} appears in
 @code{AUTOMAKE_OPTIONS}, then a @command{dejagnu}-based test suite is
 assumed.  The variable @code{DEJATOOL} is a list of names that are
 passed, one at a time, as the @option{--tool} argument to
@@ -10149,7 +10162,11 @@ brittle.
 @opindex no-define
 This option is meaningful only when passed as an argument to
 @code{AM_INIT_AUTOMAKE}.  It will prevent the @code{PACKAGE} and
-@code{VERSION} variables from being @code{AC_DEFINE}d.
+@code{VERSION} variables from being @code{AC_DEFINE}d.  But notice
+that they will remain defined as shell variables in the generated
+@code{configure}, and as make variables in the generated
+@code{Makefile}; this is deliberate, and required for backward
+compatibility.
 
 @item @option{no-dependencies}
 @cindex Option, @option{no-dependencies}
@@ -10315,20 +10332,23 @@ directories.  When using this format, consider using the
 @option{filename-length-max=99} option to catch file names too long.
 
 @option{tar-ustar} selects the ustar format defined by POSIX
-1003.1-1988.  This format is believed to be old enough to be portable.
+1003.1-1988.  This format is old enough to be portable:
+As of 2018, it is supported by the native @code{tar} command on
+GNU, FreeBSD, NetBSD, OpenBSD, AIX, HP-UX, Solaris, at least.
 It fully supports empty directories.  It can store file names with up
 to 256 characters, provided that the file name can be split at
 directory separator in two parts, first of them being at most 155
 bytes long.  So, in most cases the maximum file name length will be
-shorter than 256 characters.  However you may run against broken tar
-implementations that incorrectly handle file names longer than 99
-characters (please report them to @email{@value{PACKAGE_BUGREPORT}} so we
-can document this accurately).
+shorter than 256 characters.
 
 @option{tar-pax} selects the new pax interchange format defined by POSIX
 1003.1-2001.  It does not limit the length of file names.  However,
 this format is very young and should probably be restricted to
-packages that target only very modern platforms.  There are moves to
+packages that target only very modern platforms.
+As of 2018, this format is supported by the native @code{tar} command only
+on GNU, FreeBSD, OpenBSD system; it is not supported by the native
+@code{tar} command on NetBSD, AIX, HP-UX, Solaris.
+There are moves to
 change the pax format in an upward-compatible way, so this option may
 refer to a more recent version in the future.
 
@@ -10444,7 +10464,7 @@ performing @ref{Automatic Rule Rewriting, , VPATH rewrites, autoconf,
 The Autoconf Manual}).
 
 Finally, Automake also emits rules to support the
-@uref{http://www.gnu.org/software/global/, GNU Global Tags program}.
+@uref{https://www.gnu.org/software/global/, GNU Global Tags program}.
 The @code{GTAGS} rule runs Global Tags and puts the
 result in the top build directory.  The variable @code{GTAGS_ARGS}
 holds arguments that are passed to @command{gtags}.
@@ -10838,9 +10858,6 @@ they all have their serious drawbacks and limitations.  That's why
 automake provides support for a more advanced and flexible way of
 obtaining quieter output from @command{make} (for most rules at least).
 
-@c TODO: Maybe describe in brief the precedent set by the build system
-@c of the Linux Kernel, from which Automake took inspiration ... Links?
-
 To give the gist of what Automake can do in this respect, here is a simple
 comparison between a typical @command{make} output (where silent rules
 are disabled) and one with silent rules enabled:
@@ -11036,7 +11053,7 @@ If the @option{--add-missing} option is given, @command{automake} will
 add a generic version of the @file{INSTALL} file as well as the
 @file{COPYING} file containing the text of the current version of the
 GNU General Public License existing at the time of this Automake release
-(version 3 as this is written, @uref{http://www.gnu.org/@/copyleft/@/gpl.html}).
+(version 3 as this is written, @uref{https://www.gnu.org/@/copyleft/@/gpl.html}).
 However, an existing @file{COPYING} file will never be overwritten by
 @command{automake}.
 
@@ -12978,7 +12995,7 @@ instance, here is how @code{AM_PATH_LISPDIR} (@pxref{Emacs Lisp})
 computes @samp{$(lispdir)}:
 
 @example
-$EMACS -batch -q -eval '(while load-path
+$EMACS -batch -Q -eval '(while load-path
   (princ (concat (car load-path) "\n"))
   (setq load-path (cdr load-path)))' >conftest.out
 lispdir=`sed -n
@@ -13063,8 +13080,8 @@ To make it possible for us to fix a bug, please report it. In order to
 do so effectively, it helps to know when and how to do it.
 
 Before reporting a bug, it is a good idea to see if it is already known.
-You can look at the @uref{http://debbugs.gnu.org/, GNU Bug Tracker}
-and the @uref{http://lists.gnu.org/@/archive/@/html/@/bug-automake/,
+You can look at the @uref{https://debbugs.gnu.org/, GNU Bug Tracker}
+and the @uref{https://lists.gnu.org/@/archive/@/html/@/bug-automake/,
 bug-automake mailing list archives} for previous bug reports.  We
 previously used a
 @uref{http://sourceware.org/@/cgi-bin/@/gnatsweb.pl?database=automake,
@@ -13083,7 +13100,7 @@ features.
 
 For a bug report, a feature request or other suggestions, please send
 email to @email{@value{PACKAGE_BUGREPORT}}.  This will then open a new
-bug in the @uref{http://debbugs.gnu.org/@/automake, bug tracker}.  Be
+bug in the @uref{https://debbugs.gnu.org/@/automake, bug tracker}.  Be
 sure to include the versions of Autoconf and Automake that you use.
 Ideally, post a minimal @file{Makefile.am} and @file{configure.ac} that
 reproduces the problem you encounter.  If you have encountered test

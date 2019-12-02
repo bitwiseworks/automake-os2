@@ -1,5 +1,5 @@
 #! /bin/sh
-# Copyright (C) 2003-2013 Free Software Foundation, Inc.
+# Copyright (C) 2003-2018 Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -12,7 +12,7 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # Make sure the user can override TEXINFO_TEX.
 # Also make sure TEXINFO_TEX is not distributed.
@@ -30,12 +30,13 @@ AC_OUTPUT
 END
 
 cat > Makefile.am << 'END'
-TEXINFO_TEX = $(srcdir)/tex/texinfo.tex
+TEXINFO_TEX = ../tex/texinfo.tex
 info_TEXINFOS = main.texi
 sure_it_exists:
-	test -f $(TEXINFO_TEX)
+	test -f $(srcdir)/$(TEXINFO_TEX)
 sure_it_is_not_distributed: distdir
 	test ! -f $(distdir)/tex/texinfo.tex
+check-local: sure_it_exists
 END
 
 cat > main.texi << 'END'
@@ -61,7 +62,6 @@ test -f tex/texinfo.tex
 
 ./configure
 
-$MAKE sure_it_exists
 $MAKE distcheck
 $MAKE sure_it_is_not_distributed
 

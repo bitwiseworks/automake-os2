@@ -1,5 +1,5 @@
 #! /bin/sh
-# Copyright (C) 2011-2013 Free Software Foundation, Inc.
+# Copyright (C) 2011-2018 Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -12,7 +12,7 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # Check that DejaGnu testsuites have 'srcdir' defined to a relative path
 # (both as TCL variable and as environment variable).
@@ -43,7 +43,7 @@ END
 cat > env.test/env.exp << 'END'
 set env_srcdir $env(srcdir)
 send_user "env_srcdir: $env_srcdir\n"
-if { [ regexp "^\.\.?$" $env_srcdir ] } {
+if { [ regexp "^\.(\./\.\.)?$" $env_srcdir ] } {
     pass "test_env_src"
 } else {
     fail "test_env_src"
@@ -52,13 +52,13 @@ END
 
 cat > tcl.test/tcl.exp << 'END'
 send_user "tcl_srcdir: $srcdir\n"
-if { [ regexp "^\.\.?$" $srcdir ] } {
+if { [ regexp "^\.(\./\.\.)?$" $srcdir ] } {
     pass "test_tcl_src"
 } else {
     fail "test_tcl_src"
 }
 send_user "tcl_orig_srcdir: $orig_srcdir\n"
-if { [ regexp "^\.\.?$" $orig_srcdir ] } {
+if { [ regexp "^\.(\./\.\.)?$" $orig_srcdir ] } {
     pass "test_tcl_orig_src"
 } else {
     fail "test_tcl_orig_src"
