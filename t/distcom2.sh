@@ -1,5 +1,5 @@
 #! /bin/sh
-# Copyright (C) 2001-2013 Free Software Foundation, Inc.
+# Copyright (C) 2001-2018 Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -12,7 +12,7 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # Test to make sure that depcomp and compile are added to DIST_COMMON.
 # Report from Pavel Roskin.  Report of problems with '--no-force' from
@@ -51,22 +51,18 @@ for opt in '' --no-force; do
   test -f depcomp
 
   for dir in . subdir; do
-    # FIXME: the logic of this check and other similar ones in other
-    # FIXME: 'distcom*.sh' files should be factored out in a common
-    # FIXME: subroutine in 'am-test-lib.sh'...
     sed -n -e "
-      /^DIST_COMMON =.*\\\\$/ {
+      /^am__DIST_COMMON =.*/ {
+        b body
         :loop
-        p
         n
-        t clear
-        :clear
+        :body
+        p
         s/\\\\$/\\\\/
         t loop
         s/$/ /
         s/[$tab ][$tab ]*/ /g
         p
-        n
       }" $dir/Makefile.in > $dir/dc.txt
   done
 

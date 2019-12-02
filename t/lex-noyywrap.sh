@@ -1,5 +1,5 @@
 #! /bin/sh
-# Copyright (C) 1999-2013 Free Software Foundation, Inc.
+# Copyright (C) 1999-2018 Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -12,7 +12,7 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # Check Lex support with flex using the '%noyywrap' option.
 
@@ -69,7 +69,8 @@ if ! cross_compiling; then
   : For shells with busted 'set -e'.
 fi
 
-# Sanity check on distribution.
-yl_distcheck DISTCHECK_CONFIGURE_FLAGS='LEXLIB="none needed"'
+# Sanity check on distribution.  Escape in LEXLIB must use backspace,
+# not double-quotes, to avoid a spurious failure with AIX make.
+yl_distcheck DISTCHECK_CONFIGURE_FLAGS='LEXLIB=none\ needed'
 
 :

@@ -6,6 +6,7 @@ Adam J. Richter                 adam@yggdrasil.com
 Adam Mercer                     ramercer@gmail.com
 Adam Sampson                    ats@offog.org
 Adrian Bunk                     bunk@fs.tum.de
+Aharon Robbins                  arnold@skeeve.com
 Akim Demaille                   akim@gnu.org
 Alan Modra                      amodra@bigpond.net.au
 Alex Hornby                     alex@anvil.co.uk
@@ -59,6 +60,7 @@ Brian Gough                     bjg@network-theory.co.uk
 Brian Jones                     cbj@nortel.net
 Bruce Korb                      bkorb@gnu.org
 Bruno Haible                    haible@ilog.fr
+Carnë Draug                     carandraug+dev@gmail.com
 Carsten Lohrke                  carlo@gentoo.org
 Charles Wilson                  cwilson@ece.gatech.edu
 Chris Hoogendyk                 hoogendyk@bio.umass.edu
@@ -88,6 +90,7 @@ David Byron                     dbyron@dbyron.com
 David Fang                      fang@csl.cornell.edu
 Davyd Madeley                   davyd@fugro-fsi.com.au
 David Pashley                   david@davidpashley.com
+David Wohlferd                  dw@limegreensocks.com
 David Zaroski                   cz253@cleveland.Freenet.Edu
 Dean Povey                      dpovey@wedgetail.com
 Dennis J. Linse                 Dennis.J.Linse@SAIC.com
@@ -103,6 +106,7 @@ Dmitry Mikhin                   dmitrym@acres.com.au
 Dmitry V. Levin                 ldv@altlinux.org
 Doug Evans                      devans@cygnus.com
 Duncan Gibson                   duncan@thermal.esa.int
+Dilyan Palauzov                 dilyan.palauzov@aegee.org
 Ed Hartnett                     ed@unidata.ucar.edu
 Eleftherios Gkioulekas          lf@amath.washington.edu
 Elena A. Vengerova              helen@oktetlabs.ru
@@ -110,6 +114,7 @@ Elmar Hoffmann                  elho@elho.net
 Elrond                          Elrond@Wunder-Nett.org
 Enrico Scholz                   enrico.scholz@informatik.tu-chemnitz.de
 Erez Zadok                      ezk@cs.columbia.edu
+Eric Bavier                     bavier@cray.com
 Eric Blake                      eblake@redhat.com
 Eric Dorland                    eric@debian.org
 Eric Magnien                    emagnien@club-internet.fr
@@ -152,10 +157,13 @@ Harlan Stenn                    Harlan.Stenn@pfcs.com
 He Li                           tippa000@yahoo.com
 Henrik Frystyk Nielsen          frystyk@w3.org
 Hib Eris                        hib@hiberis.nl
+Hilko Bengen                    bengen@debian.org
+Holger Hans Peter Freyther      holger@freyther.de
 Ian Lance Taylor                ian@cygnus.com
 Ignacy Gawedzki                 i@lri.fr
 Илья Н. Голубев                 gin@mo.msk.ru
 Imacat                          imacat@mail.imacat.idv.tw
+Infirit                         infirit@gmail.com
 Inoue                           inoue@ainet.or.jp
 Jack Kelly                      jack@jackkelly.name
 James Amundson                  amundson@users.sourceforge.net
@@ -188,6 +196,7 @@ Joel N. Weber II                nemo@koa.iolani.honolulu.hi.us
 Joerg-Martin Schwarz            jms@jms.prima.ruhr.de
 Johan Dahlin                    jdahlin@async.com.br
 Johan Danielsson                joda@pdc.kth.se
+Johan Kristensen                johankristensen@gmail.com
 Johannes Nicolai                johannes.nicolai@student.hpi.uni-potsdam.de
 John Calcote                    john.calcote@gmail.com
 John F Trudeau                  JohnTrudeau@firsthealth.com
@@ -195,6 +204,7 @@ John Pierce                     hawkfan@pyrotechnics.com
 John Ratliff                    autoconf@technoplaza.net
 John R. Cary                    cary@txcorp.com
 John W. Coomes                  jcoomes@eng.Sun.COM
+Jonathan L Peyton               jonathan.l.peyton@intel.com
 Jonathan Nieder                 jrnieder@gmail.com
 Joseph S. Myers                 joseph@codesourcery.com
 Josh MacDonald                  jmacd@cs.berkeley.edu
@@ -281,6 +291,8 @@ Nathanael Nerode                neroden@twcny.rr.com
 Nelson H. F. Beebe              beebe@math.utah.edu
 Nicholas Wourms                 nwourms@netscape.net
 Nick Bowler                     nbowler@elliptictech.com
+Nick Brown                      brownn@brocade.com
+Nicola Fontana                  ntd@entidi.it
 Nicolas Joly                    njoly@pasteur.fr
 Nicolas Thiery                  nthiery@Icare.mines.edu
 NightStrike                     nightstrike@gmail.com
@@ -315,6 +327,7 @@ Per Oyvind Hvidsten             poeh@enter.vg
 Peter Breitenlohner             peb@mppmu.mpg.de
 Peter Eisentraut                peter_e@gmx.net
 Peter Gavin                     pgavin@debaser.kicks-ass.org
+Peter Hutterer                  peter.hutterer@who-t.net
 Peter Johansson                 trojkan@gmail.com
 Peter Mattis                    petm@scam.XCF.Berkeley.EDU
 Peter Muir                      iyhi@yahoo.com
@@ -328,6 +341,7 @@ Phil Edwards                    phil@jaj.com
 Phil Nelson                     phil@cs.wwu.edu
 Philip Fong                     pwlfong@users.sourceforge.net
 Philip S Tellis                 philip@ncst.ernet.in
+Philipp A. Hartmann             philipp.hartmann@offis.de
 Пухальский Юрий Андреевич       pooh@cryptopro.ru
 Quentin Glidic                  sardemff7+gnu@sardemff7.net
 Rainer Orth                     ro@techfak.uni-bielefeld.de
@@ -389,6 +403,7 @@ Theodoros V. Kalamatianos       thkala@gmail.com
 Thien-Thi Nguyen                ttn@glug.org
 Thomas Fitzsimmons              fitzsim@redhat.com
 Thomas Gagne                    tgagne@ix.netcom.com
+Thomas Jahns                    jahns@dkrz.de
 Thomas Klausner                 tk@giga.or.at
 Thomas Morgan                   tmorgan@pobox.com
 Thomas Schwinge                 tschwinge@gnu.org
@@ -400,6 +415,7 @@ Tim Mooney                      mooney@dogbert.cc.ndsu.NoDak.edu
 Tim Retout                      diocles@debian.org
 Tim Rice                        tim@multitalents.net
 Tim Van Holder                  tim.van.holder@pandora.be
+Tobias Hansen                   thansen@debian.org
 Toshio Kuratomi                 toshio@tiki-lounge.com
 Tom Epperly                     tepperly@llnl.gov
 Tom Rini                        tom_rini@mentor.com
