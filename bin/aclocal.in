@@ -791,10 +791,8 @@ sub trace_used_macros ()
       $response_fh = new File::Temp(UNLINK => 1);
 
       # All candidate files.
-      print $response_fh
-            join ("\n",
-                  (map { "$_" }
-                  (grep { exists $files{$_} } @file_order))) . "\n";
+      print $response_fh "$_\n"
+            for grep { exists $files{$_} } @file_order;
 
       # All candidate macros.
       print $response_fh
