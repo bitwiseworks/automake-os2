@@ -81,6 +81,9 @@ sub find_file ($@)
   $optional = 1
     if $file_name =~ s/\?$//;
 
+  return undef
+    if(length($file_name) == 0);
+
   return File::Spec->canonpath ($file_name)
     if -e $file_name;
 
